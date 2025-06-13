@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,10 +28,10 @@ public class UserServiceSpyTest {
          */
 
         //設定當input為3時，返回名字為"I'm no.3"的User
-        Mockito.when(userService.getUserById(3)).thenReturn(new User(3, "I'm no.3", new Date()));
+        Mockito.when(userService.getUserById(3)).thenReturn(new User(3, "I'm no.3", LocalDateTime.now()));
 
         //設定當input為任意數時，返回名字為"I'm any"的User
-        Mockito.when(userService.getUserById(5)).thenReturn(new User(200, "I'm any", new Date()));
+        Mockito.when(userService.getUserById(5)).thenReturn(new User(200, "I'm any", LocalDateTime.now()));
 
         //spy跟mock一樣，當一個method有定義多次return值時，也是從最後定義的那個when開始比對，如果參數符合的話，就返回那個when的doReturn，如果都沒有符合的，就call原本的bean的方法
         User user2 = userService.getUserById(3); //所以這裡返回的user會是 I'm any

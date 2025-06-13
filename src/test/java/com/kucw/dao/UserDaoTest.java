@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,7 +23,7 @@ public class UserDaoTest {
     public void insert() throws Exception {
         User user = new User();
         user.setName("test Boss");
-        user.setUpdateTime(new Date());
+        user.setUpdateTime(LocalDateTime.now());
         userDao.insertUser(user);
     }
 

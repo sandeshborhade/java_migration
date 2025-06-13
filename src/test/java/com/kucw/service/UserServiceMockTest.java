@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,10 +26,10 @@ public class UserServiceMockTest {
          */
 
         //當使用任何int值call userService的getUserById方法時，就回傳一個名字為"I'm mockito name"的user
-        Mockito.when(userService.getUserById(Mockito.anyInt())).thenReturn(new User(200, "I'm mockito name", new Date()));
+        Mockito.when(userService.getUserById(Mockito.anyInt())).thenReturn(new User(200, "I'm mockito name", LocalDateTime.now()));
 
         //限制只有當input的數字是3時，才會return名字為"I'm no.3"的User
-        Mockito.when(userService.getUserById(3)).thenReturn(new User(3, "I'm no.3", new Date()));
+        Mockito.when(userService.getUserById(3)).thenReturn(new User(3, "I'm no.3", LocalDateTime.now()));
 
         //當一個method有定義多次return值時，會從最後定義的那個when開始比對，如果參數符合的話，就返回那個when的return
         User user = userService.getUserById(3); //所以這裡會返回 "I'm no.3" User

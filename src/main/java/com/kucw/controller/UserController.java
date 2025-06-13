@@ -5,7 +5,7 @@ import com.kucw.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RestController
 public class UserController {
@@ -22,7 +22,7 @@ public class UserController {
     public Integer insert(@PathVariable String name) {
         User user = new User();
         user.setName(name);
-        user.setUpdateTime(new Date());
+        user.setUpdateTime(LocalDateTime.now());
         return userDao.insertUser(user);
     }
 }

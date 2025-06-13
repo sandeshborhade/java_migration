@@ -1,16 +1,16 @@
 package com.kucw.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class User implements Serializable {
     private Integer id;
     private String name;
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     public User(){}
 
-    public User(Integer id, String name, Date updateTime) {
+    public User(Integer id, String name, LocalDateTime updateTime) {
         this.id = id;
         this.name = name;
         this.updateTime = updateTime;
@@ -32,11 +32,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 
