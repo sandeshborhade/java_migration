@@ -1,0 +1,211 @@
+GitHub Copilot Code Migration: From Java 7 to Java 17 (with Automated Transformation)
+
+
+
+Purpose:
+
+This document provides a comprehensive guide on leveraging Github Copilot's " Agent mode (which acts as peer programmer, it performs multi-step coding tasks at our command — analyzing our codebase, reading relevant files, proposing file edits )”. It seamlessly upgrades Spring Boot Java applications from older versions, specifically demonstrated with a migration from Java 7 to Java 17. It covers prerequisites, detailed setup instructions, the migration process using Github Copilot's AI chat, and insights into the expected outcomes and timeline.
+
+Introduction to Github Copilot's Agent Mode
+
+GitHub Copilot's agent mode transforms code into an autonomous, multi-step coding collaborator that uses natural language prompts to solve complex coding tasks. It analyzes codebases, plans solutions, executes commands, integrates with external tools, and iterates until the task is complete.
+GitHub Copilot's agent mode can significantly simplify version upgrades by automating tasks and intelligently guiding you through the process. To use it for upgrades, enable agent mode in your IDE (Visual Studio or VS Code) . 
+
+Additionally GitHub Copilot pro can help streamline the process of modernizing and upgrading your Java applications. Copilot will analyze the project, generate a plan, automatically fix issues it encounters when carrying out the plan, and produce a summary. 
+2)	Prerequisites: 
+Before embarking on the migration process, ensure the following software and access requirements are met:
+Java Development Kit (JDK) 7: Required for the original Java 7 application to be built and run.
+Java Development Kit (JDK) 17: The target Java version for the migration.
+Visual Studio Code (VS Code): The integrated development environment (IDE) where the “GitHub Copilot” extension will be installed and used.
+GitHub Access: Necessary for authentication within the “GitHub Copilot” extension and potentially for managing code changes.
+Apache Maven 3.8.9: The version of Maven compatible with and used by the original Java 7 project.
+Apache Maven 3.9.10: The target version of Maven, typically required for building Java 17 applications.
+
+   3) Project Setup and Environment Configuration:
+Proper setup of your development environment is crucial for a smooth migration
+
+JDK Installation and Configuration:
+Install both JDK 7 and JDK 17 on your system.
+Configure the environment variables (e.g., `JAVA_HOME`, `PATH`) to correctly point to both JDK installations, ensuring that the appropriate JDK can be invoked when needed.
+Maven Configuration:
+Download Apache Maven 3.8.9.
+Configure this Maven version to be used with your Java 7 project. This typically involves setting `M2_HOME` and updating `PATH` or configuring it within your IDE for the specific project.
+Visual Studio Code Installation:
+Download and install VS Code from its official website: https://code.visualstudio.com/
+GitHub Copilot Extension Installation:
+Open Visual Studio Code.
+Navigate to the Extensions view by clicking the Extensions icon (or pressing `Ctrl+Shift+X`).
+In the search bar, type "GitHub Copilot".
+Locate the "GitHub Copilot" extension and click the "Install" button.
+
+
+
+ GitHub Copilot sign-in:
+Open VS Code.
+Sign In Prompt: After installing, you’ll likely see a prompt asking you to sign in to GitHub. Click Sign In.
+Authorization: A browser window will open, directing you to GitHub. If you’re not already signed in, log in with your GitHub credentials.
+Authorize GitHub Copilot: Once logged in, you’ll be prompted to authorize GitHub Copilot to access your account. Click Authorize GitHub Copilot.
+
+
+6. Configure GitHub Copilot Settings :
+You can customize GitHub Copilot’s behavior in VS Code by adjusting some settings:
+Open Settings: In VS Code, click on the gear icon in the lower-left corner and choose Settings.
+Search for GitHub Copilot: In the Settings search bar, type “GitHub Copilot” to see the various options available.
+Adjust Settings: You can enable or disable specific Copilot features, like whether Copilot provides inline suggestions, autocompletes, or shows multiple options.
+You can also access the Copilot settings by navigating to File > Preferences > Settings and searching for “Copilot.”
+
+
+
+4) Automated Migration to Java 17 Using Github Copilot
+Once your environment is set up, you can proceed with the automated migration.
+
+Initial Application Build and Test (Java 7):
+
+Before initiating the migration process, it is mandatory to build and run your existing Java 7 application.
+Thoroughly test all end-points and execute all existing JUnit test cases to ensure the application is fully functional and stable in its original state. This is essential for verifying the success of the migration.
+
+
+
+
+Initiating Migration via Github Copilot Chat:
+
+Open the github copilot chat window “Edit with Copilot”.
+       
+Open the chat window in agent mode so that the copilot can automatically pick and edit files, run terminal commands and many more actions.
+Select Agent and copilot model as GPT-4.1.
+Enter the following prompt:`“Execute a Java migration project with the following strict requirements:
+Compilation Requirements:
+Target Platform: JDK 17 ONLY
+Remove all JDK 7 specific code and dependencies
+Ensure code compiles and runs exclusively on JDK 17
+Remove/replace any multi-release JAR dependencies
+
+
+
+
+Migration Scope:
+Core Language Updates:
+Replace anonymous classes with lambda expressions
+Convert for loops to Stream API operations
+Implement functional interfaces
+Use Optional for null handling
+Apply pattern matching for instance of
+Implement switch expressions
+Use text blocks for multiline strings
+Apply records for data classes
+generate java doc 
+API Modernization:
+Replace java.util.Date with java.time API
+Update JDBC calls to use try-with-resources
+Migrate to modern Collection factory methods
+Replace legacy concurrent utilities with modern alternatives
+Update XML/JSON processing to modern APIs
+Implement modern HTTP Client
+Testing Framework Updates:
+Upgrade test dependencies to JDK 17 compatible versions
+Implement JUnit 5 features:
+Parameterized tests
+Dynamic tests
+Nested test classes
+Parallel execution support
+Update mocking frameworks (Mockito/PowerMock)
+Enhance assertion libraries
+Quality Gates:
+100% compilation with JDK 17
+No runtime dependencies on older JDK versions
+Maintained or improved test coverage
+Preserved business logic functionality
+Consistent API behavior
+Performance metrics within existing SLAs
+Deliverables:
+JDK 17 compliant codebase
+Modernized test suite
+Dependency compatibility report
+Migration validation results
+Performance benchmark comparison
+Please provide a detailed migration plan ensuring strict JDK 17 compatibility while preserving system behavior and performance characteristics."
+his enhanced prompt emphasizes:
+Strict JDK 17 compatibility requirements
+Specific modernization targets
+Clear testing framework updates
+Defined quality gates
+Required deliverables
+Implement JavaDoc in all classes:
+A brief description of the method purpose 
+@Param tags for each parameter
+@return tag (if the method returns a value)
+@throws or @exception tags for any exceptions
+@see tags for any related method or classes(optional)
+	
+
+ Copilot will then begin analyzing your project and applying the necessary transformations.
+
+
+
+
+
+
+
+
+
+
+
+
+Addressing Post-Migration Issues (Example):
+
+During or after the initial migration, copilot might highlight or you might encounter compilation errors or issues.
+Below error encountered in the code 
+
+
+
+The above issue is fixed by the copilot when providing the error message to the agent.
+
+
+
+Final Verification:
+
+After  copilot indicates completion and any subsequent fixes, perform the following:
+Compile the entire project.
+Build the application.
+Run the transformed application.
+Thoroughly test all end-points to ensure functionality.
+Execute all JUnit test cases to confirm they pass and that the refactoring has not introduced regressions.
+5. Migration Outcomes and Observations
+Time Taken: For the demonstrated project migration, the entire process, including initial setup and problem resolution, took approximately 240 minutes.
+Code Changes:  After doing all the changes code has been pushed to below branch using copilot :
+telusDemoProject/ReportTrackerApp at migration_Java7_To_Java17_github_copilot
+Refactoring: The agent effectively refactors the code to leverage Java 17 features (e.g., Lambdas, Streams, new Date/Time API, etc.), enhancing code readability and efficiency.Below are the snapshot of the changes in the respective files
+	
+
+
+
+
+
+File 1:
+
+
+
+
+
+
+
+Dependency Upgraded:
+
+
+
+
+Code Coverage: copilot added Jacoco plugin to  assists in ensuring code coverage is maintained or improved post-migration 
+
+
+
+API Testing: All existing APIs are expected to function correctly after the migration.  
+Summary:
+It works as expected. Github copilot migrated jdk7 version to JDK17, It has refactored the code into JDK 17 from jdk 7, but some portions of the code still retained older Java 7 constructs, which require manual intervention to modernize. Additionally, GitHub Copilot prompts for confirmation after migrating each file, or for preferences when choosing how to migrate specific files, making the process partially manual. Code compiled and works perfectly. Endpoints are also working as expected.
+
+
+
+
+
+
+
+
