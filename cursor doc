@@ -1,0 +1,207 @@
+1. Initial Setup
+Installed Cursor as a separate IDE.
+Imported the legacy java7sampleProject into Cursor for modernization.
+Opened the project in Cursor IDE and began preparing for Java 11 migration.
+
+
+2. Preparing for Migration
+Note: When cursor considers the set of files on which processing needs to be done, we have 2 options
+All projects - By default all the projects in the workspace are considered for analysis.
+Selected packages or files - We can specify the list of packages or files on which the processing can be applied on.
+These 2 approaches have their list of pros and cons.
+
+Approach
+Pros
+Cons
+All projects in workspace
+By default we can apply the Cursor processing on all the files in the workspace.
+Since it contains huge context, the accuracy of the results is compromised. Best suited in simple projects.
+ Selected package or files
+Since the processing happens on selected files only, the context is limited and results can be accurate.
+Explicitly files need to be added to context. Best for step by step migration in huge projects.
+
+
+Currently we are opting for manual selection of files into the context i.e, ‘Selected package or files’. 
+
+🔄 Migration Objectives
+Migrate legacy Java 7 project to Java 17.
+Modernize code using Java 8–17 features (streams, lambdas, var, etc.).
+Upgrade to Spring Boot 2.7.18 for Java 17 compatibility.
+Migrate test suite to JUnit 5 and update mock frameworks.
+Ensure backward compatibility and all tests passing.
+
+⚙️ Migration Steps
+The below Prompt is given in the chat window.
+
+Migrate this Java 7 project to Java 17. 
+While migrating, refactor and modernize the codebase by incorporating relevant and safe features from Java 8, Java 11, and Java 17. Also, enhance the unit and integration test cases to align with the upgraded code style, functional patterns, and new APIs. Preserve business logic and ensure behavioral consistency.
+==============================
+Java 8 Refactoring Goals:
+==============================
+1. Replace anonymous inner classes with lambda expressions where it improves clarity.
+2. Use Streams API for collection processing: filtering, mapping, sorting, grouping, etc.
+3. Introduce method references to simplify lambda expressions where applicable.
+4. Use `Optional` to avoid explicit null checks and prevent NullPointerExceptions.
+5. Refactor interfaces to use `default` and `static` methods where it reduces utility class usage.
+6. Replace legacy date/time APIs (`Date`, `Calendar`, `SimpleDateFormat`) with `java.time` (e.g., `LocalDate`, `ZonedDateTime`, `DateTimeFormatter`).
+7. Use `Files`, `Paths`, `Files.lines()`, etc., for better NIO-based file I/O.
+==============================
+ Java 11 Refactoring Goals:
+==============================
+1. Use `var` for local variable declarations where type is obvious to reduce verbosity.
+2. Use enhanced `String` methods: `isBlank()`, `strip()`, `lines()`, and `repeat()` where applicable.
+3. Replace manual file I/O with `Files.readString()` and `Files.writeString()`.
+4. Use `java.net.http.HttpClient` for HTTP communication, replacing older `HttpURLConnection` usages.
+5. Use immutable collections via `List.of()`, `Set.of()`, and `Map.of()`.
+6. Use `Predicate.not()` for simplifying stream filters with negations.
+==============================
+Java 17 Refactoring Goals:
+==============================
+1. Apply pattern matching for `instanceof` wherever applicable.
+2. Replace verbose switch statements with modern switch expressions.
+3. Use text blocks (`"""`) to simplify multi-line strings like SQL queries, HTML templates, or logs.
+4. Introduce record classes to replace boilerplate POJOs with final fields, constructor, equals, hashCode, and toString.
+5. Use sealed classes to restrict class hierarchies where applicable.
+6. Use `RandomGenerator` from `java.util.random` for modern random number generation.
+==============================
+ Test Case Enhancement:
+==============================
+1. Migrate old JUnit 4 test cases to JUnit 5.
+2. Use expressive assertion libraries like `Assertions.assertThrows`, `assertAll`, and `assertTimeout`.
+3. Replace repetitive mocks or boilerplate setup with parameterized or dynamic tests.
+4. Add tests to cover newly added branches due to Optional, Streams, or switch expressions.
+5. Validate side effects of refactored methods using mock verifications or output assertions.
+6. Ensure test coverage is expanded to validate key refactored logic (e.g., date/time conversions, stream processing).
+7. Refactor `@Before`/`@After` into `@BeforeEach`/`@AfterEach`, and use `@Nested` test classes for grouping.
+8. Use descriptive test names and `@DisplayName` annotations for readability.
+At the end, provide:
+- A report of major language upgrades applied.
+- A summary of enhanced test coverage.
+- Any remaining TODOs or recommendations for manual cleanup.
+
+
+The below changes are affected.
+
+
+ 1. Java Version Upgrade
+Before:
+java.version, <source>, <target> = 1.7
+After:
+Updated to 17 in both <properties> and maven-compiler-plugin
+
+ 2. Spring Boot Upgrade
+Before: Existing Spring Boot version not compatible with Java 17
+After: Upgraded to 2.7.18 in the <parent> section
+Why? Spring Boot 1.x and early 2.x versions do not support Java 17.
+
+ 3. Code Modernization
+ a. Java 8+ Features Used
+Old Java 7 Code
+Modern Java Code
+Java Version
+Manual loops (for, forEach)
+Streams + lambdas
+8+
+Anonymous comparators
+Comparator.comparing() with method references
+8+
+Manual null checks
+Objects.requireNonNull()
+8+
+Empty/blank checks
+String.isBlank()
+11
+new ArrayList<>()
+List.of()
+9
+File I/O
+Files.readString() / Files.writeString()
+11
+Local variable declarations
+var
+10
+
+ b. JUnit Modernization
+Legacy Code
+Migrated Code
+Framework
+@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class) (optional)
+JUnit 5 + Mockito
+Manual loops in tests
+Streams and lambdas
+Java 8
+JUnit 4
+JUnit 5 + Vintage engine for backward compatibility
+JUnit 5
+
+
+4. Test Dependency Modernization
+Mockito upgraded to 4.11.0
+JUnit Jupiter (5.8.2) added
+JUnit Vintage Engine added for legacy test support
+Spring Boot Starter Test retained
+
+ 5. Specific Code Refactoring Examples
+UserService.java
+Replaced:
+Loops → Streams (.stream().filter().collect())
+Comparator logic → Comparator.comparing()
+Grouping → Collectors.groupingBy()
+FileService.java
+Migrated from:
+File, FileWriter, BufferedReader
+To:
+Path, Files.writeString(), Files.readString()
+Users.java
+Swapped:
+Deprecated @Email from Hibernate → javax.validation.constraints.Email
+General:
+Use of var, List.of(), Set.of(), Map.of()
+Replaced unnecessary boilerplate with modern idioms
+
+6.Building the project:
+The build for the affected codebase can be generated using the prompt.
+“Create build using maven”
+Build creation fails with the below messages, it also suggests what steps need to be taken.giWe need to provide approval for it so that it can do the necessary changes in the codebase.
+Now we again try to create build, still we get errors as below
+
+As indicated, the import issue is fixed in the code by Cursor. This time the build successfully executes.
+
+
+Migration summary is provided as below.
+
+8.Running the application
+The application is run from the cursor chat as below.
+
+We can see the endpoints are working as expected from the below screenshots.
+
+
+
+
+
+
+📝 Summary of Key Changes
+Category
+Changes Made
+Java Version
+Upgraded from 1.7 → 17
+Build Tool (Maven)
+Updated maven-compiler-plugin, java.version, Spring Boot version
+Code Refactoring
+Streams, Lambdas, var, Files, Immutables
+Tests
+Migrated to JUnit 5, modern Mockito, stream-based assertions
+Validation
+Replaced deprecated Hibernate @Email annotation with Jakarta standard
+Spring Boot
+Upgraded to 2.7.18 for Java 17 compatibility
+
+
+✅ Results After Migration
+All unit and integration tests passed successfully.
+No runtime errors or regressions observed.
+Application now runs with modern Java and Spring Boot stack.
+The endpoints are working as expected.
+The changes of the migration are available at https://github.com/Ramakrishnamurthy/java-sample-users-project/pull/5
+
